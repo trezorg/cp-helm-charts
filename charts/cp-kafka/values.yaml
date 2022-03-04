@@ -58,6 +58,7 @@ configurationOverrides:
   # EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
   "listener.security.protocol.map": |-
    PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+   "metric.reporters": "io.confluent.metrics.reporter.ConfluentMetricsReporter"
 
 ## Additional env variables
 customEnv: {}
