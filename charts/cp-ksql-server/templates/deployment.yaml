@@ -70,7 +70,7 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
-          {{- if and .Values.ksql.headless .Values.ksql.queriesFile -}}
+          {{- if and .Values.ksql.headless ( or .Values.ksql.queriesFile .Values.ksql.queries ) }}
           - name: ksql-queries
             mountPath: /etc/ksql/queries
           {{- end }}
@@ -83,7 +83,7 @@ spec:
             value: {{ template "cp-ksql-server.cp-schema-registry.service-name" . }}
           - name: KSQL_HEAP_OPTS
             value: "{{ .Values.heapOptions }}"
-          {{- if and .Values.ksql.headless .Values.ksql.queriesFile -}}
+          {{- if and .Values.ksql.headless ( or .Values.ksql.queriesFile .Values.ksql.queries ) }}
           - name: KSQL_KSQL_QUERIES_FILE
             value: /etc/ksql/queries/queries.sql
           {{- else }}
@@ -108,7 +108,7 @@ spec:
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
       {{- end }}
-      {{- if and .Values.ksql.headless .Values.ksql.queriesFile -}}
+      {{- if and .Values.ksql.headless ( or .Values.ksql.queriesFile .Values.ksql.queries ) }}
       - name: ksql-queries
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-ksql-queries-configmap

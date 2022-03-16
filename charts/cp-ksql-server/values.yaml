@@ -85,6 +85,7 @@ external:
 ksql:
   headless: true
   queriesFile: "queries.sql"
+  queries: ""
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"

@@ -1,4 +1,4 @@
-{{- if and .Values.ksql.headless .Values.ksql.queriesFile -}}
+{{- if and .Values.ksql.headless ( or .Values.ksql.queriesFile .Values.ksql.queries ) -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,9 +9,14 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
+{{- if .Values.ksql.queries }}
+  queries.sql: |-
+    {{- tpl .Values.ksql.queries $ | nindent 4 }}
+{{- else }}
   {{- $files := .Files }}
   {{- range tuple .Values.ksql.queriesFile }}
-  {{ . }}: |-
-{{ $files.Get . | indent 4 }}
+  queries.sql: |-
+    {{- tpl ( $files.Get . ) $ | nindent 4 }}
   {{- end }}
+{{- end -}}
 {{- end -}}
